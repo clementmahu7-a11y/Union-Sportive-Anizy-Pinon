@@ -547,10 +547,6 @@
   .comite-card:hover{border-color:rgba(255,204,0,.5)}
   .comite-card .av{width:34px;height:34px;border-radius:50%;background:repeating-linear-gradient(45deg,#222,#222 8px,#1c1c1c 8px,#1c1c1c 16px);display:grid;place-items:center;color:#5a5a62;flex-shrink:0}
   .comite-card .av svg{width:18px;height:18px}
-  .doyen{margin-top:34px;background:linear-gradient(135deg,#1b1b14,#000);border:1px solid rgba(255,204,0,.3);border-radius:18px;padding:30px;text-align:center;max-width:540px}
-  .doyen .dy-lab{font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--jaune)}
-  .doyen .dy-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin:6px 0 8px}
-  .doyen p{color:var(--gris);font-size:.9rem}
   .edu-cat{margin-bottom:42px}
   .edu-cat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:14px;margin-bottom:22px}
   .edu-cat-head h3{font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;margin-top:6px;line-height:1}
@@ -842,8 +838,8 @@ const MATCHS = [
 
   /* ---------------------------- U12 - U13 ---------------------------- */
   { categorie:"U12 · U13",
-    prochain:{ date:"", heure:"", lieu:"Stade de Pinon", enjeu:"Championnat", domicile:"USAP", adversaire:"Vic-sur-Aisne" },
-    dernier :{ score:"6-2", enjeu:"Championnat", domicile:"USAP", adversaire:"Crouy-Cuffies" } },
+    prochain:{ date:"", heure:"", lieu:"", enjeu:"", domicile:"", adversaire:"Repos" },
+    dernier :{ score:"3-0", enjeu:"Championnat", domicile:"USAP", adversaire:"Vic-Sur-Aisne" } },
 
   /* ---------------------------- U14 - U15 ---------------------------- */
   { categorie:"U14 · U15",
@@ -857,7 +853,7 @@ const MATCHS = [
 
   /* ---------------------------- Seniors A ---------------------------- */
   { categorie:"Seniors A",
-    prochain:{ date:"", heure:"", lieu:"", enjeu:"Amical", domicile:"USAP A", adversaire:"Aulnois A" },
+    prochain:{ date:"14 Juin", heure:"15h00", lieu:"Stade d'Aulnois", enjeu:"Amical", domicile:"USAP A/B", adversaire:"Aulnois A" },
     dernier :{ score:"2-2", enjeu:"Amical", domicile:"USAP A", adversaire:"Chemin des Dames A" } },
 
   /* ---------------------------- Seniors B ---------------------------- */
@@ -872,7 +868,7 @@ const MATCHS = [
 
   /* ----------------------------- Vétérans ---------------------------- */
   { categorie:"Vétérans",
-    prochain:{ date:"", heure:"", lieu:"", enjeu:"", domicile:"USAP", adversaire:"Repos" },
+    prochain:{ date:"14 Juin", heure:"9h30", lieu:"Stade d'Anizy", enjeu:"Amical", domicile:"USAP", adversaire:"FC Amigny-Rouy" },
     dernier :{ score:"", enjeu:"", domicile:"USAP", adversaire:"" } },
 
 ]
@@ -928,7 +924,7 @@ const BUREAU_CONF = [
 
 /* --- Responsables de pôles (même principe) --- */
 const RESPONSABLES_CONF = [
-  { poste:"Communication & Animation", prenom:"Raphaël",  nom:"Mahu",      photo:"" },
+  { poste:"Communication & Animation", prenom:"Raphaël",  nom:"Mahu",      photo:"raphael.png" },
   { poste:"Responsable Jeunes",        prenom:"Quantin",  nom:"Arnould",   photo:"" },
   { poste:"Responsable Féminines",     prenom:"Claude",   nom:"Blondelle", photo:"" },
   { poste:"Responsable Arbitrage",     prenom:"Pascal",   nom:"Guérin",    photo:"" },
@@ -938,10 +934,8 @@ const RESPONSABLES_CONF = [
 ];
 
 /* --- Membres du comité directeur (juste les noms) --- */
-const COMITE_CONF = ["Romain Torlet", "Arnaud Torlet", "David Torlet", "Paulo Cardoso"];
+const COMITE_CONF = ["Romain Torlet", "Arnaud Torlet", "David Torlet", "Paulo Cardoso", "Daniel Josef"];
 
-/* --- Membre doyen --- */
-const DOYEN_CONF = "Daniel Joseph Flammermont";
 
 
 /* ====================================================================== */
@@ -956,7 +950,7 @@ const EDUCATEURS = [
   { categorie:"U6 · U7",          prenom:"Alexandra",  nom:"Hellé",     fonction:"Éducatrice",           photo:"" },
   { categorie:"U8 · U9",          prenom:"Shannon",    nom:"Obi",       fonction:"Éducateur",            photo:"" },
   { categorie:"U8 · U9",          prenom:"Mélyssa",    nom:"Clarysse",  fonction:"Éducatrice",           photo:"" },
-  { categorie:"U10 · U11",        prenom:"Raphaël",    nom:"Mahu",      fonction:"Éducateur",            photo:"" },
+  { categorie:"U10 · U11",        prenom:"Raphaël",    nom:"Mahu",      fonction:"Éducateur principal",  photo:"raphael.png" },
   { categorie:"U10 · U11",        prenom:"Noémy",      nom:"Vimeux",    fonction:"Éducatrice",           photo:"" },
   { categorie:"U12 · U13",        prenom:"Pierre",     nom:"Lecluze",   fonction:"Éducateur principal",  photo:"" },
   { categorie:"U14 · U15",        prenom:"Clément",    nom:"Mahu",      fonction:"Éducateur",            photo:"" },
