@@ -1,0 +1,1 @@
+PDF fallback generation will be embedded directly in the static app.
