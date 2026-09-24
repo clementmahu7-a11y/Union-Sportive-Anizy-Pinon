@@ -1,0 +1,29 @@
+name: USAP Convocations - official PDF forms
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "convocations/index.html"
+      - ".github/workflows/usap-convocations.yml"
+permissions:
+  contents: write
+jobs:
+  sync-forms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download official District Aisne forms
+        run: |
+          mkdir -p convocations/templates
+          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-Presence-U6-U7.pdf" -o convocations/templates/u6-u7.pdf
+          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U8-U9.pdf" -o convocations/templates/u8-u9.pdf
+          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U11.pdf" -o convocations/templates/u10-u11.pdf
+          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-challenge-U13.pdf" -o convocations/templates/u12-u13.pdf
+      - name: Commit PDF forms
+        run: |
+          git config user.name "USAP Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add convocations/templates
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Add official District Aisne convocation forms"
+          git push
