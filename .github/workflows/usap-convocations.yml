@@ -15,10 +15,12 @@ jobs:
       - name: Download official District Aisne forms
         run: |
           mkdir -p convocations/templates
-          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-Presence-U6-U7.pdf" -o convocations/templates/u6-u7.pdf
-          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U8-U9.pdf" -o convocations/templates/u8-u9.pdf
-          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U11.pdf" -o convocations/templates/u10-u11.pdf
-          curl -LfsS "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-challenge-U13.pdf" -o convocations/templates/u12-u13.pdf
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/153 Safari/537.36"
+          REF="https://aisne.fff.fr/"
+          curl -LfsS -A "$UA" -e "$REF" "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-Presence-U6-U7.pdf" -o convocations/templates/u6-u7.pdf
+          curl -LfsS -A "$UA" -e "$REF" "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U8-U9.pdf" -o convocations/templates/u8-u9.pdf
+          curl -LfsS -A "$UA" -e "$REF" "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U11.pdf" -o convocations/templates/u10-u11.pdf
+          curl -LfsS -A "$UA" -e "$REF" "https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-challenge-U13.pdf" -o convocations/templates/u12-u13.pdf
       - name: Commit PDF forms
         run: |
           git config user.name "USAP Bot"
