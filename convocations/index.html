@@ -22,6 +22,21 @@
   #app .btn{min-height:45px}
   #app .shell>.head{margin-top:0}
 }
+@media(max-width:760px){
+#roster .card:has(#tbody){overflow:visible!important;padding:12px}
+#roster table,#roster tbody,#roster tr,#roster td{display:block;width:100%}
+#roster thead{display:none}
+#roster tr{background:#fff;border:1px solid #e5dece;border-radius:14px;margin-bottom:12px;padding:13px;box-shadow:0 2px 10px #00000008}
+#roster td{border:0!important;padding:3px 0!important;font-size:14px!important;overflow-wrap:anywhere}
+#roster td:first-child{font-size:17px!important;margin-bottom:7px}
+#roster td:first-child b{font-size:17px}
+#roster td:nth-child(2):before{content:"Naissance : ";font-weight:800;color:#766f62}
+#roster td:nth-child(3):before{content:"Licence : ";font-weight:800;color:#766f62}
+#roster td:nth-child(4){display:flex;gap:9px;margin-top:12px}
+#roster td:nth-child(4) .btn{flex:1;min-width:0;margin:0!important;font-size:14px!important;padding:12px 8px!important}
+#roster .tabs button{font-size:14px;min-height:43px;padding:10px 13px}
+#roster #editplayer,#roster #adminplayers{padding:16px}
+}
 </style>
 </head>
 <body>
