@@ -46,7 +46,7 @@ window.usapCreateAccount = async function () {
 };
 </script>
 <script>
-const URL='https://yaobxgegsckwroqhvczd.supabase.co';
+const SUPABASE_URL='https://yaobxgegsckwroqhvczd.supabase.co';
 const KEY='sb_publishable_gSlfBma0XcUsCPmQxL4SnA_Gseoxqq4';
 let sb=null;const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const CATS=['U6-U7','U8-U9','U10-U11','U12-U13'],MAX={'U6-U7':18,'U8-U9':18,'U10-U11':12,'U12-U13':12};
@@ -58,7 +58,7 @@ const fr=s=>s?new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',mont
 function toast(t){let x=$('#toast');x.textContent=t;x.classList.remove('hide');clearTimeout(x._t);x._t=setTimeout(()=>x.classList.add('hide'),2200)}
 function amsg(t,ok=false){$('#amsg').innerHTML=t?`<div class="notice ${ok?'ok':''}">${esc(t)}</div>`:''}
 async function waitForSupabase(){if(window.supabase?.createClient)return true;for(let i=0;i<60;i++){await new Promise(resolve=>setTimeout(resolve,250));if(window.supabase?.createClient)return true}return false}
-async function boot(){bind();$('#date').valueAsDate=new Date();await waitForSupabase();try{if(window.supabase)sb=window.supabase.createClient(URL,KEY)}catch(e){console.error('Supabase init',e)}if(!sb){amsg('Le service de connexion ne s’est pas chargé. Vérifie ta connexion et actualise la page.');return}const{data:{session:s}}=await sb.auth.getSession();session=s;if(s)await after();else showAuth();sb.auth.onAuthStateChange(async(_,s2)=>{session=s2;if(s2)await after();else showAuth()})}
+async function boot(){bind();$('#date').valueAsDate=new Date();await waitForSupabase();try{if(window.supabase)sb=window.supabase.createClient(SUPABASE_URL,KEY)}catch(e){console.error('Supabase init',e)}if(!sb){amsg('Le service de connexion ne s’est pas chargé. Vérifie ta connexion et actualise la page.');return}const{data:{session:s}}=await sb.auth.getSession();session=s;if(s)await after();else showAuth();sb.auth.onAuthStateChange(async(_,s2)=>{session=s2;if(s2)await after();else showAuth()})}
 function showAuth(){$('#app').classList.add('hide');$('#auth').classList.remove('hide');$('#join').classList.add('hide');$('#login').classList.remove('hide');$('#signup').classList.add('hide')}
 async function after(){const{data:m}=await sb.from('club_members').select('*').eq('user_id',session.user.id).maybeSingle();member=m;if(!m||!m.active){$('#app').classList.add('hide');$('#auth').classList.remove('hide');$('#login').classList.add('hide');$('#signup').classList.add('hide');$('#join').classList.remove('hide');return}$('#auth').classList.add('hide');$('#app').classList.remove('hide');$('#who').textContent=m.full_name||session.user.email;await load()}
 async function login(){amsg('Connexion…',true);const{error}=await sb.auth.signInWithPassword({email:$('#lemail').value.trim(),password:$('#lpass').value});if(error)amsg(error.message)}
