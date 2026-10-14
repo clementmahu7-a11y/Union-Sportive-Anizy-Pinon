@@ -1,0 +1,11 @@
+{
+  "name": "USAP Convocations",
+  "short_name": "USAP",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "lang": "fr",
+  "description": "Convocations et feuilles de plateau US Anizy-Pinon"
+}
