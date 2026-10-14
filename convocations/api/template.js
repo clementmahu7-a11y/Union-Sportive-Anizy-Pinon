@@ -1,6 +1,6 @@
 const TEMPLATES = {
   'U6-U7': 'https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-Presence-U6-U7.pdf',
-  'U8-U9': 'https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U8-U9.pdf',
+  'U8-U9': 'https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U8-U9-1.pdf',
   'U10-U11': 'https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-dengagement-U11.pdf',
   'U12-U13': 'https://aisne.fff.fr/wp-content/uploads/sites/83/2026/09/Feuille-de-challenge-U13.pdf'
 };
