@@ -4,8 +4,22 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#111111",
+  "background_color": "#f6e914",
   "theme_color": "#111111",
   "lang": "fr",
-  "description": "Convocations et feuilles de plateau US Anizy-Pinon"
+  "description": "Convocations et feuilles de plateau US Anizy-Pinon",
+  "icons": [
+    {
+      "src": "/usap-app-icon.png",
+      "sizes": "520x520",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/usap-app-icon.png",
+      "sizes": "520x520",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
