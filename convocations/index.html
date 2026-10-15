@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111">
 <link rel="manifest" href="/manifest.webmanifest?v=usap2">
 <link rel="icon" type="image/png" href="/usap-favicon.png?v=2">
@@ -53,6 +53,10 @@
  #app>#mobile-nav button{font-size:clamp(11px,3vw,14px);line-height:1.25;min-height:48px;padding:12px 2px;border-radius:12px}
  #app main.shell{padding-bottom:calc(115px + env(safe-area-inset-bottom,0px))}
 }
+
+/* Keep the standalone iPhone app within the device viewport. */
+html{width:100%;max-width:100%;overflow-x:hidden}body{width:100%;max-width:100%;min-width:0;overflow-x:clip}#app{width:100%;max-width:100%;min-width:0}#app main.shell{width:100%;max-width:1050px;min-width:0}
+@media(max-width:760px){#app>header,#app>#mobile-nav{max-width:100vw}#app main.shell{overflow-wrap:anywhere}}
 </style>
 </head>
 <body>
