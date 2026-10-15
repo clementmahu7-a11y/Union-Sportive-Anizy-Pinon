@@ -135,7 +135,18 @@ function data(){return{category:$('#cat').value,match_date:$('#date').value,meet
 function selected(){return[...S].map(id=>P.find(x=>x.id===id)).filter(Boolean)}
 function message(m,a){let l=[`⚫🟡 CONVOCATION ${m.category}`,''];if(m.match_date)l.push('📅 '+fr(m.match_date));if(m.event_name)l.push('⚽ '+m.event_name);if(m.place)l.push('📍 '+m.place);if(m.meeting_time)l.push('🕘 Rendez-vous : '+m.meeting_time.slice(0,5));if(m.kickoff_time)l.push('⚽ Début : '+m.kickoff_time.slice(0,5));l.push('',`${m.category==='Pôle Féminin'?'Joueuses convoquées':'Joueurs convoqués'} (${a.length}) :`);a.forEach(x=>l.push('• '+name(x)));if(m.note)l.push('',m.note);l.push('','Merci de confirmer la présence de votre enfant. ⚫🟡');return l.join('\n')}
 function prepare(){let m=data(),a=selected();if(!m.match_date)return toast('Ajoute la date');if(!a.length)return toast(m.category==='Pôle Féminin'?'Sélectionne des joueuses':'Sélectionne des joueurs');$('#message').textContent=message(m,a);$('#pdfhint').textContent=pdfLabel(m.category)+' sera choisi et rempli automatiquement.';$('#result').classList.remove('hide');$('#result').scrollIntoView({behavior:'smooth'})}
-async function saveMatch(){let m=data(),a=selected();if(!m.match_date||!a.length)return toast(m.category==='Pôle Féminin'?'Date et joueuses obligatoires':'Date et joueurs obligatoires');const{data:created,error}=await sb.from('matches').insert(m).select('id').single();if(error){console.error(error);return toast('Erreur enregistrement')}const links=a.map((p,i)=>({match_id:created.id,player_id:p.id,selected_order:i+1,injured:false}));const{error:e}=await sb.from('match_players').insert(links);if(e){console.error(e);return toast('Match créé, joueurs non liés')}toast('Convocation enregistrée');await load()}
+async function saveCallupAtomic(matchId,details,playerIds){
+ const {data:result,error}=await sb.rpc('save_callup_atomic',{p_match_id:matchId,p_details:details,p_player_ids:playerIds});
+ if(error)throw error;
+ return result;
+}
+async function saveMatch(){
+ const m=data(),a=selected();if(!m.match_date||!a.length)return toast('Date et joueurs obligatoires');
+ const btn=$('#save');btn.disabled=true;
+ try{await saveCallupAtomic(null,m,a.map(p=>p.id));toast('Convocation enregistrée');await load()}
+ catch(err){console.error('Enregistrement',err);toast('Erreur : '+(err.message||'Enregistrement impossible'))}
+ finally{btn.disabled=false}
+}
 function renderTabs(){$('#tabs').innerHTML=CATS.map(c=>`<button class="${rCat===c?'on':''}" data-c="${c}">${c} (${P.filter(x=>x.category===c).length})</button>`).join('');$$('#tabs button').forEach(b=>b.onclick=()=>{rCat=b.dataset.c;renderTabs();renderRoster();updateGenderLabels()})}
 function updateGenderLabels(){const female=rCat==='Pôle Féminin';const add=$('#addplayerbtn'),edit=$('#editheading');if(add)add.textContent=female?'Ajouter une joueuse':'Ajouter le joueur';if(edit&&$('#editplayer').classList.contains('hide'))edit.textContent=female?'Modifier une joueuse':'Modifier un joueur';const heading=$('#playersheading');if(heading)heading.textContent=$('#cat').value==='Pôle Féminin'?'2. Joueuses':'2. Joueurs';}
 function renderRoster(){let a=P.filter(x=>x.category===rCat),admin=member?.role==='admin';if(admin)$('#newcat').value=rCat;$('#tbody').innerHTML=a.map(x=>`<tr><td><b>${esc(name(x))}</b></td><td>${short(x.birth_date)}</td><td>${esc(x.license_number||'')}</td>${admin?'<td><button class="btn light" data-edit="'+esc(x.id)+'" type="button" style="margin-right:7px">Modifier</button><button class="btn light" data-remove="'+esc(x.id)+'" type="button">Retirer</button></td>':''}</tr>`).join('')||'<tr><td colspan="'+(admin?'4':'3')+'" class="empty">Aucun joueur</td></tr>'}
@@ -193,17 +204,10 @@ async function saveHistory(id){
  const item=H.find(x=>x.id===id);if(!item)return;
  const btn=$('#histsave'),status=$('#histstatus'),patch=histFields(item),ids=historyPlayers(item);
  if(!patch.match_date||!ids.length)return status.textContent='Une date et au moins un joueur sont obligatoires.';
- if(ids.length>MAX[item.category])return status.textContent='Maximum '+MAX[item.category]+' joueurs ou joueuses.';
+ if(ids.length>MAX[item.category])return status.textContent='Trop de joueurs sélectionnés.';
  btn.disabled=true;status.textContent='Enregistrement en cours…';
- try {
-  const old=(item.match_players||[]).map(x=>x.player_id);
-  const remove=old.filter(p=>!ids.includes(p)),add=ids.filter(p=>!old.includes(p));
-  const {error:u}=await sb.from('matches').update(patch).eq('id',id);
-  if(u)throw u;
-  if(remove.length){const {error:d}=await sb.from('match_players').delete().eq('match_id',id).in('player_id',remove);if(d)throw d}
-  if(add.length){const {error:a}=await sb.from('match_players').insert(add.map((player_id,i)=>({match_id:id,player_id,selected_order:old.length+i+1,injured:false})));if(a)throw a}
-  status.textContent='Convocation modifiée.';toast('Modifications enregistrées');await load();
- }catch(e){console.error('History update',e);status.textContent='Erreur : '+(e.message||'Enregistrement impossible')+' · Vérifie l’historique.';await load()}
+ try{await saveCallupAtomic(id,patch,ids);toast('Modifications enregistrées');await load()}
+ catch(err){console.error('History update',err);status.textContent='Erreur : '+(err.message||'Enregistrement impossible')}
  finally{btn.disabled=false}
 }
 async function deleteHistory(id){
