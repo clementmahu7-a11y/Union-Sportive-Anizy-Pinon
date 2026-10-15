@@ -10,7 +10,7 @@ module.exports=async function(req,res){
  const headers={apikey:service,Authorization:'Bearer '+service};
  const who=await fetch(base+'/auth/v1/user',{headers:{apikey:service,Authorization:'Bearer '+token}});
  if(!who.ok)return res.status(401).json({error:'Session expirée'});
- const user=await who.json();
+ const user=await who.json();let claims;try{claims=JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString('utf8'))}catch{return res.status(401).json({error:'Jeton invalide'})}if(claims.aal!=='aal2')return res.status(403).json({error:'Double authentification administrateur requise'});
  const member=await fetch(base+'/rest/v1/club_members?select=role,active&user_id=eq.'+encodeURIComponent(user.id),{headers});
  if(!member.ok)throw Error('Vérification membre indisponible');
  const roles=await member.json();
