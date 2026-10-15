@@ -57,7 +57,7 @@
 /* Keep the standalone iPhone app within the device viewport. */
 html{width:100%;max-width:100%;overflow-x:hidden}body{width:100%;max-width:100%;min-width:0;overflow-x:clip}#app{width:100%;max-width:100%;min-width:0}#app main.shell{width:100%;max-width:1050px;min-width:0}
 @media(max-width:760px){#app>header,#app>#mobile-nav{max-width:100vw}#app main.shell{overflow-wrap:anywhere}}
-</style>
+#roster.mfa-only > :not(#mfasetup){display:none!important}#roster.mfa-only #mfasetup{display:block!important}\n</style>
 </head>
 <body>
 <div id="auth" class="auth"><div class="authbox"><div class="ey">US ANIZY-PINON</div><h1>Convocations</h1><p class="sub">Compte éducateur · saison 2026/2027</p><div id="amsg"></div><button id="switchaccount" type="button" class="btn light hide" style="width:100%;margin:10px 0">Se déconnecter / Changer de compte</button>
@@ -187,9 +187,9 @@ let mfaFactorId=null;
 async function verifyAdminMfa(){
  const {data:level,error}=await sb.auth.mfa.getAuthenticatorAssuranceLevel();
  if(error)throw error;
- if(level.currentLevel==='aal2')return true;
+ if(level.currentLevel==='aal2'){$('#mfasetup').classList.add('hide');$('#roster').classList.remove('mfa-only');document.querySelectorAll('#app nav').forEach(n=>n.classList.remove('hide'));return true;}
  concealClubData();$('#auth').classList.add('hide');$('#app').classList.remove('hide');
- for(const id of ['conv','roster','hist','calendar'])$('#'+id)?.classList.add('hide');
+ for(const id of ['conv','hist','calendar'])$('#'+id)?.classList.add('hide');$('#roster').classList.remove('hide');$('#roster').classList.add('mfa-only');document.querySelectorAll('#app nav').forEach(n=>n.classList.add('hide'));
  $('#mfasetup').classList.remove('hide');
  const {data:list,error:le}=await sb.auth.mfa.listFactors();if(le)throw le;
  const verified=(list.totp||[]).find(f=>f.status==='verified');
@@ -202,7 +202,7 @@ async function beginMfa(){
 }
 async function finishMfa(){
  const code=$('#mfacode').value.trim();if(!/^\\d{6}$/.test(code)){ $('#mfamsg').textContent='Saisis un code de 6 chiffres.';return }
- try{const {data:challenge,error:ce}=await sb.auth.mfa.challenge({factorId:mfaFactorId});if(ce)throw ce;const {error}=await sb.auth.mfa.verify({factorId:mfaFactorId,challengeId:challenge.id,code});if(error)throw error;$('#mfasetup').classList.add('hide');$('#mfacode').value='';await after()}catch(e){$('#mfamsg').textContent='Code incorrect ou expiré : '+e.message}
+ try{const {data:challenge,error:ce}=await sb.auth.mfa.challenge({factorId:mfaFactorId});if(ce)throw ce;const {error}=await sb.auth.mfa.verify({factorId:mfaFactorId,challengeId:challenge.id,code});if(error)throw error;$('#mfasetup').classList.add('hide');$('#roster').classList.remove('mfa-only');document.querySelectorAll('#app nav').forEach(n=>n.classList.remove('hide'));$('#mfacode').value='';await after();page('conv')}catch(e){$('#mfamsg').textContent='Code incorrect ou expiré : '+e.message}
 }
 async function after(){const{data:m,error:accessError}=await sb.from('club_members').select('*').eq('user_id',session.user.id).maybeSingle();if(accessError){$('#switchaccount').classList.remove('hide');concealClubData();$('#auth').classList.remove('hide');$('#login').classList.add('hide');$('#signup').classList.add('hide');$('#join').classList.add('hide');amsg('Accès non vérifié : réessaie avec une connexion Internet.');return}member=m;if(m?.active&&m.role==='admin'){try{if(!await verifyAdminMfa())return}catch(e){concealClubData();$('#mfamsg').textContent='Vérification 2FA indisponible : '+e.message;$('#mfasetup').classList.remove('hide');return}}if(!m||!m.active){$('#switchaccount').classList.remove('hide');$('#app').classList.add('hide');$('#auth').classList.remove('hide');$('#login').classList.add('hide');$('#signup').classList.add('hide');$('#join').classList.toggle('hide',!!m);amsg(m?(m.rejected?'Ta demande d’accès au club a été refusée par un administrateur. Contacte le responsable du club.':m.approved_once?'Ton accès au club a été bloqué par un administrateur. Contacte le responsable du club.':'Ton compte n’est pas autorisé à accéder au club. Il peut être en attente de validation ou avoir été bloqué par un administrateur.'): 'Renseigne le code club pour demander ton accès.',!m?.rejected);return}$('#switchaccount').classList.add('hide');$('#auth').classList.add('hide');$('#app').classList.remove('hide');$('#who').textContent=(m.role==='admin'?'Administrateur · ':'')+(m.full_name||session.user.email);$('#adminplayers').classList.toggle('hide',m.role!=='admin');$('#adminactions').classList.toggle('hide',m.role!=='admin');$('#caladmin').classList.toggle('hide',m.role!=='admin');$('#pushtest').classList.toggle('hide',m.role!=='admin');$('#membersadmin').classList.toggle('hide',m.role!=='admin');$('#backupadmin').classList.toggle('hide',m.role!=='admin');if(m.role==='admin')await loadMemberAccess();await load();await restorePushState()}
 async function login(){amsg('Connexion…',true);const{error}=await sb.auth.signInWithPassword({email:$('#lemail').value.trim(),password:$('#lpass').value});if(error)amsg(error.message)}
