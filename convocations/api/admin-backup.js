@@ -12,7 +12,7 @@ module.exports=async function(req,res){
  try{
   const check=await fetch(BASE+'/auth/v1/user',{headers:{apikey:secret,Authorization:'Bearer '+token}});
   if(!check.ok)return res.status(401).json({error:'Session invalide'});
-  const user=await check.json();
+  const user=await check.json();let claims;try{claims=JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString('utf8'))}catch{return res.status(401).json({error:'Jeton invalide'})}if(claims.aal!=='aal2')return res.status(403).json({error:'Double authentification administrateur requise'});
   const member=await fetch(BASE+'/rest/v1/club_members?select=role,active&user_id=eq.'+encodeURIComponent(user.id),{headers:adminHeaders});
   if(!member.ok)throw Error('Membership check failed');
   const records=await member.json();
