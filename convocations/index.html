@@ -41,6 +41,7 @@
 #roster #editplayer,#roster #adminplayers{padding:16px}
 }
  .brand{display:flex;align-items:center;gap:10px}.brand-logo{width:45px;height:45px;object-fit:contain;flex-shrink:0;background:transparent}@media(max-width:760px){#app .brand-logo{width:48px;height:48px}#app>header>div{min-height:72px}#app main.shell{padding-top:calc(95px + env(safe-area-inset-top,0px))}}
+ .history-item{display:flex;width:100%;justify-content:space-between;align-items:center;gap:14px;text-align:left;border:0;border-bottom:1px solid #eee8dc;padding:15px 6px;background:#fff;cursor:pointer;flex-wrap:wrap}.history-item strong{font-size:14px}.history-item span{font-size:12px;color:#766f62}.history-item:hover{background:#fff9e3}#histdetail{scroll-margin-top:110px}#histdetail .players label{cursor:pointer}#histdetail .hpcheck{width:19px;height:19px;accent-color:#e4ba12;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -65,7 +66,7 @@
 <button id="plateaupdf" type="button" class="btn gold wide" style="margin-top:16px">Télécharger la feuille de plateau</button><div id="pstatus" class="sub" aria-live="polite" style="margin-top:8px"></div></div>
 <div id="standardconv"><div class="grid"><div class="card"><h2>1. Match / plateau</h2><div class="form" style="margin-top:12px"><label class="field"><span>Catégorie</span><select id="cat"><option>U6-U7</option><option selected>U8-U9</option><option>U10-U11</option><option>U12-U13</option><option>Pôle Féminin</option></select></label><label class="field"><span>Date</span><input id="date" type="date"></label><label class="field"><span>Rendez-vous</span><input id="rdv" type="time"></label><label class="field"><span>Début</span><input id="time" type="time"></label><label class="field full"><span>Journée</span><input id="event" placeholder="Ex. Journée 3"></label><label class="field full"><span>Lieu</span><input id="place" placeholder="Stade, ville…"></label><label class="field full"><span>Responsable</span><select id="educator"></select></label><label class="field full"><span>Note facultative</span><textarea id="note" rows="2" placeholder="Ex. Gourde et survêtement."></textarea></label></div></div><div class="card"><div class="head" style="margin-bottom:10px"><div><h2 id="playersheading">2. Joueurs</h2><div id="count" class="sub"></div></div><button id="all" class="btn light">Tout sélectionner</button></div><div id="players" class="players"></div></div></div><button id="prepare" class="btn gold wide">Préparer la convocation →</button><div id="result" class="result hide"><h2>Convocation prête</h2><pre id="message"></pre><div class="acts"><button id="copy" class="btn gold">Copier le message</button><button id="pdf" class="btn dark" style="border:1px solid #444">Télécharger la feuille officielle</button><button id="save" class="btn dark" style="border:1px solid #444">Enregistrer la convocation</button></div><p class="pdfhint" id="pdfhint"></p></div></div></section>
 <section id="roster" class="hide"><div class="head"><div><div class="ey">BASE JOUEURS</div><h1>Effectifs</h1><p class="sub">Effectif partagé entre tous les comptes.</p></div></div><div id="tabs" class="tabs"></div><div id="editplayer" class="card hide" style="margin-bottom:16px"><h2 id="editheading">Modifier un joueur</h2><form id="editplayerform" class="form" style="margin-top:14px"><input id="editid" type="hidden"><label class="field"><span>Nom</span><input id="editlast" required></label><label class="field"><span>Prénom</span><input id="editfirst" required></label><label class="field"><span>Date de naissance</span><input id="editbirth" type="date" required></label><label class="field"><span>Numéro de licence</span><input id="editlicense" required></label><label class="field full"><span>Catégorie</span><select id="editcat"><option>U6-U7</option><option>U8-U9</option><option>U10-U11</option><option>U12-U13</option><option>Pôle Féminin</option></select></label><div class="field full"><button id="editsave" class="btn gold" type="submit">Enregistrer les modifications</button> <button id="editcancel" class="btn light" type="button">Annuler</button></div></form><div id="editmsg" class="sub" aria-live="polite"></div></div><div id="adminplayers" class="card hide" style="margin-bottom:16px"><h2>Gestion des joueurs · Administrateur</h2><p class="sub">Ajoute un joueur dans la catégorie sélectionnée ci-dessous. Tu peux également retirer un joueur des effectifs sans effacer ses anciennes convocations.</p><form id="addplayer" class="form" style="margin-top:12px"><label class="field"><span>Nom</span><input id="newlast" required maxlength="90"></label><label class="field"><span>Prénom</span><input id="newfirst" required maxlength="90"></label><label class="field"><span>Date de naissance</span><input id="newbirth" type="date" required></label><label class="field"><span>Numéro de licence</span><input id="newlicense" required maxlength="30" inputmode="numeric"></label><label class="field full"><span>Catégorie</span><select id="newcat"><option>U6-U7</option><option>U8-U9</option><option>U10-U11</option><option>U12-U13</option><option>Pôle Féminin</option></select></label><div class="field full"><button id="addplayerbtn" class="btn gold" type="submit">Ajouter le joueur</button></div></form><div id="playermsg" class="sub" aria-live="polite"></div></div><div class="card" style="overflow:auto"><table><thead><tr><th>Joueur</th><th>Naissance</th><th>N° FFF</th><th id="adminactions" class="hide">Gestion</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
-<section id="hist" class="hide"><div class="head"><div><div class="ey">ARCHIVES</div><h1>Historique</h1><p class="sub">Convocations enregistrées par le club.</p></div></div><div id="hbody" class="card"></div></section></main></div><div id="toast" class="toast hide"></div>
+<section id="hist" class="hide"><div class="head"><div><div class="ey">ARCHIVES</div><h1>Historique</h1><p class="sub">Convocations enregistrées par le club.</p></div></div><div id="hbody" class="card"></div><div id="histdetail" class="card hide" style="margin-top:14px"></div></section></main></div><div id="toast" class="toast hide"></div>
 <script>
 window.usapCreateAccount = async function () {
   const status = document.getElementById('amsg'), button = document.getElementById('signupbtn');
@@ -96,7 +97,7 @@ const SUPABASE_URL='https://yaobxgegsckwroqhvczd.supabase.co';
 const KEY='sb_publishable_gSlfBma0XcUsCPmQxL4SnA_Gseoxqq4';
 let sb=null;const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const CATS=['U6-U7','U8-U9','U10-U11','U12-U13','Pôle Féminin'],MAX={'U6-U7':18,'U8-U9':18,'U10-U11':12,'U12-U13':12,'Pôle Féminin':18};
-let session=null,member=null,P=[],E=[],H=[],S=new Set(),rCat='U8-U9';
+let session=null,member=null,P=[],E=[],H=[],S=new Set(),rCat='U8-U9',openMatchId=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const name=x=>x?`${x.first_name||''} ${x.last_name||''}`.trim():'';
 const short=s=>{if(!s)return'';let[a,b,c]=s.split('-');return`${c}/${b}/${a}`};
@@ -142,7 +143,84 @@ async function addPlayer(e){e.preventDefault();if(member?.role!=='admin')return;
 function editPlayer(e){const b=e.target.closest('button[data-edit]');if(!b||member?.role!=='admin')return;const p=P.find(x=>x.id===b.dataset.edit);if(!p)return;const panel=$('#editplayer');panel.classList.remove('hide');$('#editheading').textContent=p.category==='Pôle Féminin'?'Modifier une joueuse':'Modifier un joueur';$('#editid').value=p.id;$('#editlast').value=p.last_name||'';$('#editfirst').value=p.first_name||'';$('#editbirth').value=p.birth_date||'';$('#editlicense').value=p.license_number||'';$('#editcat').value=p.category;$('#editmsg').textContent='';panel.scrollIntoView({behavior:'smooth',block:'center'})}
 async function saveEditedPlayer(e){e.preventDefault();if(member?.role!=='admin')return;const id=$('#editid').value,p=P.find(x=>x.id===id);if(!p)return;const last=$('#editlast').value.trim(),first=$('#editfirst').value.trim(),birth=$('#editbirth').value,license=$('#editlicense').value.trim(),category=$('#editcat').value,msg=$('#editmsg'),btn=$('#editsave');if(!last||!first||!birth||!license||!CATS.includes(category)){msg.textContent='Remplis tous les champs.';return}if(new Date(birth)>new Date()){msg.textContent='Date de naissance invalide.';return}btn.disabled=true;msg.textContent='Enregistrement…';try{const{error}=await sb.from('players').update({last_name:last,first_name:first,birth_date:birth,license_number:license,category}).eq('id',id);if(error)throw error;$('#editplayer').classList.add('hide');rCat=category;await load();toast(category==='Pôle Féminin'?'Joueuse modifiée':'Joueur modifié')}catch(err){msg.textContent='Erreur : '+err.message}finally{btn.disabled=false}}
 async function removePlayer(e){const b=e.target.closest('button[data-remove]');if(!b||member?.role!=='admin')return;const p=P.find(x=>x.id===b.dataset.remove);if(!p)return;if(!confirm('Retirer '+name(p)+' des effectifs ? '+(p.category==='Pôle Féminin'?'Ses anciennes convocations seront conservées.':'Ses anciennes convocations seront conservées.')))return;b.disabled=true;const{error}=await sb.from('players').update({active:false}).eq('id',p.id);if(error){toast('Erreur : '+error.message);b.disabled=false;return}S.delete(p.id);await load();toast(p.category==='Pôle Féminin'?'Joueuse retirée':'Joueur retiré')}
-function renderHist(){$('#hbody').innerHTML=H.length?H.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:10px 0"><div><b>${esc(x.category)} · ${esc(x.event_name||'Match / plateau')}</b><div class="sub">${short(x.match_date)} · ${(x.match_players||[]).length} joueurs</div></div></div>`).join(''):'<div class="empty">Aucune convocation enregistrée.</div>'}
+
+function renderHist(){
+ const body=$('#hbody');
+ body.innerHTML=H.length?H.map(x=>'<button type="button" data-history="'+esc(x.id)+'" class="history-item"><strong>'+esc(x.category)+' · '+esc(x.event_name||'Match / plateau')+'</strong><span>'+short(x.match_date)+' · '+(x.match_players||[]).length+' '+(x.category==='Pôle Féminin'?'joueuses':'joueurs')+'</span><span aria-hidden="true">›</span></button>').join(''):'<div class="empty">Aucune convocation enregistrée.</div>';
+ body.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>openHistory(b.dataset.history));
+ const item=H.find(x=>x.id===openMatchId);
+ if(!item){openMatchId=null;$('#histdetail').classList.add('hide');}
+ else renderHistoryDetail(item);
+}
+function openHistory(id){
+ const item=H.find(x=>x.id===id);
+ if(!item)return;
+ openMatchId=id;renderHistoryDetail(item);
+ $('#histdetail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderHistoryDetail(item){
+ const panel=$('#histdetail');panel.classList.remove('hide');
+ const choices=(item.match_players||[]).map(x=>x.player_id);
+ const possible=P.filter(p=>eligibleForCategory(p,item.category));
+ const selectedNames=choices.map(id=>P.find(p=>p.id===id)).filter(Boolean);
+ const missing=choices.length-selectedNames.length;
+ panel.innerHTML='<div class="head"><div><div class="ey">DÉTAIL DE LA CONVOCATION</div><h2>'+esc(item.category)+' · '+esc(item.event_name||'Match / plateau')+'</h2><p class="sub">'+short(item.match_date)+'</p></div><button class="btn light" type="button" id="histclose">Fermer</button></div>'+
+ '<div class="form" id="histform">'+
+ '<label class="field"><span>Date</span><input type="date" id="hdate" value="'+esc(item.match_date)+'"></label>'+
+ '<label class="field"><span>Rendez-vous</span><input type="time" id="hrdv" value="'+esc((item.meeting_time||'').slice(0,5))+'"></label>'+
+ '<label class="field"><span>Début</span><input type="time" id="htime" value="'+esc((item.kickoff_time||'').slice(0,5))+'"></label>'+
+ '<label class="field"><span>Journée / rencontre</span><input id="hevent" value="'+esc(item.event_name||'')+'"></label>'+
+ '<label class="field full"><span>Lieu</span><input id="hplace" value="'+esc(item.place||'')+'"></label>'+
+ '<label class="field full"><span>Responsable</span><select id="heducator"><option value="">Choisir</option>'+E.filter(e=>e.category===item.category).map(e=>'<option value="'+esc(e.id)+'" '+(e.id===item.educator_id?'selected':'')+'>'+esc(name(e))+'</option>').join('')+'</select></label>'+
+ '<label class="field full"><span>Note facultative</span><textarea rows="2" id="hnote">'+esc(item.note||'')+'</textarea></label>'+
+ '<div class="full"><h2 style="margin:14px 0 8px">'+(item.category==='Pôle Féminin'?'Joueuses convoquées':'Joueurs convoqués')+'</h2><div class="players" id="hplayers">'+possible.map(p=>'<label class="p"><input type="checkbox" class="hpcheck" value="'+esc(p.id)+'" '+(choices.includes(p.id)?'checked':'')+'><span><div class="pn">'+esc(name(p))+'</div><div class="pl">'+esc(p.license_number||'')+'</div></span></label>').join('')+'</div>'+(missing?'<p class="sub">Attention : '+missing+' ancien(s) licencié(s) retiré(s) des effectifs ne figurent pas dans cette liste. Ils seront conservés si tu ne modifies pas la sélection.</p>':'')+'</div>'+
+ '</div><div class="acts" style="margin-top:16px"><button type="button" class="btn gold" id="histsave">Enregistrer les modifications</button><button type="button" class="btn dark" id="histpdf">Télécharger le PDF</button><button type="button" class="btn light" id="histdelete">Supprimer</button></div><p id="histstatus" class="sub" aria-live="polite" style="margin-top:10px"></p>';
+ $('#histclose').onclick=()=>{openMatchId=null;panel.classList.add('hide')};
+ $('#histpdf').onclick=()=>downloadHistoryPdf(item.id);
+ $('#histsave').onclick=()=>saveHistory(item.id);
+ $('#histdelete').onclick=()=>deleteHistory(item.id);
+}
+function histFields(original){
+ return {match_date:$('#hdate').value,meeting_time:$('#hrdv').value||null,kickoff_time:$('#htime').value||null,event_name:$('#hevent').value.trim()||null,place:$('#hplace').value.trim()||null,educator_id:$('#heducator').value||null,note:$('#hnote').value.trim()||null};
+}
+function historyPlayers(item){
+ const checked=[...document.querySelectorAll('.hpcheck:checked')].map(i=>i.value);
+ const old=(item.match_players||[]).map(x=>x.player_id);
+ const visible=new Set([...document.querySelectorAll('.hpcheck')].map(i=>i.value));
+ return [...new Set([...checked,...old.filter(id=>!visible.has(id))])];
+}
+async function saveHistory(id){
+ const item=H.find(x=>x.id===id);if(!item)return;
+ const btn=$('#histsave'),status=$('#histstatus'),patch=histFields(item),ids=historyPlayers(item);
+ if(!patch.match_date||!ids.length)return status.textContent='Une date et au moins un joueur sont obligatoires.';
+ if(ids.length>MAX[item.category])return status.textContent='Maximum '+MAX[item.category]+' joueurs ou joueuses.';
+ btn.disabled=true;status.textContent='Enregistrement en cours…';
+ try {
+  const old=(item.match_players||[]).map(x=>x.player_id);
+  const remove=old.filter(p=>!ids.includes(p)),add=ids.filter(p=>!old.includes(p));
+  const {error:u}=await sb.from('matches').update(patch).eq('id',id);
+  if(u)throw u;
+  if(remove.length){const {error:d}=await sb.from('match_players').delete().eq('match_id',id).in('player_id',remove);if(d)throw d}
+  if(add.length){const {error:a}=await sb.from('match_players').insert(add.map((player_id,i)=>({match_id:id,player_id,selected_order:old.length+i+1,injured:false})));if(a)throw a}
+  status.textContent='Convocation modifiée.';toast('Modifications enregistrées');await load();
+ }catch(e){console.error('History update',e);status.textContent='Erreur : '+(e.message||'Enregistrement impossible')+' · Vérifie l’historique.';await load()}
+ finally{btn.disabled=false}
+}
+async function deleteHistory(id){
+ const item=H.find(x=>x.id===id);if(!item||!confirm('Supprimer définitivement cette convocation et les joueurs associés ?'))return;
+ const status=$('#histstatus');status.textContent='Suppression en cours…';
+ const {error:links}=await sb.from('match_players').delete().eq('match_id',id);
+ if(links){status.textContent='Erreur de suppression : '+links.message;return}
+ const {error}=await sb.from('matches').delete().eq('id',id);
+ if(error){status.textContent='Erreur de suppression : '+error.message;return}
+ openMatchId=null;$('#histdetail').classList.add('hide');toast('Convocation supprimée');await load()
+}
+async function downloadHistoryPdf(id){
+ const item=H.find(x=>x.id===id);if(!item)return;
+ const players=(item.match_players||[]).map(x=>P.find(p=>p.id===x.player_id)).filter(Boolean);
+ if(!players.length)return $('#histstatus').textContent='Impossible de retrouver les joueurs actifs pour ce PDF.';
+ await generatePresencePDF(item,players,E.find(x=>x.id===item.educator_id),$('#histpdf'));
+}
 function pdfLabel(cat){return 'Feuille de présence '+cat}
 function field(form,key,value,size=8){try{const f=form.getTextField(key);f.setText(String(value??''));try{f.setFontSize(size)}catch{}}catch{}}
 function birthYear(v){return v?String(v).slice(0,4):''}
@@ -153,7 +231,20 @@ async function fillPresencePdf(bytes,m,players,edu){const doc=await PDFLib.PDFDo
 function drawFit(page,font,text,x,y,size,max){let s=String(text||'');while(s.length>1&&font.widthOfTextAtSize(s,size)>max)s=s.slice(0,-1);page.drawText(s,{x,y,size,font,color:PDFLib.rgb(0,0,0)})}
 async function fillU11Pdf(bytes,m,players,edu){const doc=await PDFLib.PDFDocument.load(bytes,{ignoreEncryption:true}),page=doc.getPages()[0],font=await doc.embedFont(PDFLib.StandardFonts.Helvetica),bold=await doc.embedFont(PDFLib.StandardFonts.HelveticaBold);drawFit(page,bold,'US ANIZY-PINON',315,669,9,200);const startY=625.5,step=18.9;players.slice(0,12).forEach((p,i)=>{const y=startY-i*step;drawFit(page,font,`${(p.last_name||'').toUpperCase()} ${p.first_name||''}`,79,y,8,181);drawFit(page,font,short(p.birth_date),282,y,8,103);drawFit(page,font,p.license_number||'',409,y,8,108)});drawFit(page,font,name(edu),315,383,8.5,205);return doc}
 async function fillU13Pdf(bytes,m,players,edu){const doc=await PDFLib.PDFDocument.load(bytes,{ignoreEncryption:true}),form=doc.getForm();field(form,'Saison','26/27');field(form,'Date',short(m.match_date));field(form,'Horaire',pdfClock(m));field(form,'EQ1','US ANIZY-PINON');field(form,'NomResponsable1',name(edu));field(form,'N°Licencié5',edu?.license_number||'');players.slice(0,12).forEach((p,i)=>{const n=i+1;field(form,'N'+n,(p.last_name||'').toUpperCase());field(form,'P'+n,p.first_name||'');field(form,'N°L'+n,p.license_number||'');field(form,'Blessure'+n,'')});return finishForm(doc,form)}
-async function downloadPdf(){const m=data(),players=selected(),edu=E.find(x=>x.id===m.educator_id),button=$('#pdf'),old=button.textContent;if(!m.match_date)return toast('Ajoute la date');if(!players.length)return toast('Sélectionne des joueurs');if(!window.PDFLib)return toast('Module PDF non chargé');button.disabled=true;button.textContent='Remplissage…';try{const bytes=await officialTemplate(m.category);const doc=await fillPresencePdf(bytes,m,players,edu);const out=await doc.save();const blob=new Blob([out],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`USAP_${m.category}_${m.match_date}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Feuille officielle remplie')}catch(err){console.error(err);toast('Erreur PDF : '+(err.message||'inconnue'))}finally{button.disabled=false;button.textContent=old}}
+async function generatePresencePDF(m,players,edu,button){
+ if(!m.match_date||!players.length)return toast('Date et joueurs obligatoires');
+ if(!window.PDFLib)return toast('Module PDF non chargé');
+ const old=button.textContent;button.disabled=true;button.textContent='Remplissage…';
+ try{
+  const bytes=await officialTemplate(m.category),doc=await fillPresencePdf(bytes,m,players,edu),out=await doc.save();
+  const blob=new Blob([out],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='USAP_'+m.category+'_'+m.match_date+'.pdf';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Feuille officielle téléchargée');
+ }catch(err){console.error(err);toast('Erreur PDF : '+(err.message||'inconnue'))}
+ finally{button.disabled=false;button.textContent=old}
+}
+async function downloadPdf(){return generatePresencePDF(data(),selected(),E.find(x=>x.id===$('#educator').value),$('#pdf'))}
+
 boot().catch(err=>{console.error('Initialisation des convocations :',err);amsg('Impossible de joindre le service de connexion. Réessaie dans quelques instants.');});
 </script>
 </body>
