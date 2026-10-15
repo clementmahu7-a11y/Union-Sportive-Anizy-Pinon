@@ -4,7 +4,7 @@ self.addEventListener('push', event => {
   let info;
   try { info=event.data.json(); } catch { info={body:event.data.text()}; }
   const title=String(info.title||'USAP Convocations');
-  const options={body:String(info.body||'Pense à préparer ta convocation.'),tag:'usap-rappel-convocation',data:{url:'/'},icon:'/icon-192.png',badge:'/icon-192.png'};
+  const options={body:String(info.body||'Pense à préparer ta convocation.'),tag:'usap-rappel-convocation',data:{url:'/'},icon:'/usap-app-icon.png',badge:'/usap-app-icon.png'};
   event.waitUntil(self.registration.showNotification(title,options));
 });
 self.addEventListener('notificationclick',event=>{
